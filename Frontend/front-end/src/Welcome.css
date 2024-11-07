@@ -1,0 +1,106 @@
+/* App.css */
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: flex-start; /* Align container to the left */
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.header .text {
+    text-transform: uppercase;
+}
+
+.header .underline {
+    width: 50px;
+    height: 4px;
+    background-color: #007bff;
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+.inputs .input {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inputs .input img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.inputs .input input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #333;
+}
+
+.inputs .input input::placeholder {
+    color: #999;
+}
+
+.forgot.password {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.forgot.password span {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.submit-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.submit {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.submit:hover {
+    background-color: #0056b3;
+}
+
+/* Style for the main container */
+div {
+    max-width: 400px;
+    padding: 20px;
+    margin: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
