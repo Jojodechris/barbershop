@@ -5,7 +5,7 @@ import Allbarber from './Allbarber';
 
 function Barber() {
     return (
-      <div className='thebarberzone'>
+      <div>
         <HeaderCstmr/>
         <Allbarber/>
       </div>

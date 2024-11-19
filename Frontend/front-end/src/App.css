@@ -26,6 +26,8 @@ h1,p{
   height: 250px;
   margin: 50px;
   margin-left:450px
+  
+
 }
 
 
@@ -97,18 +99,24 @@ h1,p{
   background-size: 50%; /* 50% of the element's width and height */
   background-color: rgb(0, 0, 0);
 }
+
+.datebutton{
+  margin-left: 82px;
+}
+
 /* App.css */
 .circle {
-  margin-top: 30px;
+  margin-bottom: 100px;
+  /* margin-top: 100px; */
   margin-left: 50px;
-  align-content: center;
-  width: 400px;
-  height: 400px;
+  /* align-content: center; */
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   background-color: #f0f0f0;
   overflow: hidden; /* To ensure the image doesn't overflow the circle */
-  position: relative; /* For absolute positioning of the image */
-  float:left;
+  /* position: relative; For absolute positioning of the image */
+  float:right;
   background-size: 200px 100px; /* Fixed size */
   background-size: 50%;
 }

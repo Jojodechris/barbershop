@@ -1,6 +1,5 @@
 // backend app.js
 
-
 const express = require("express");
 const app = express();
 
@@ -8,7 +7,7 @@ const cors = require("cors");
 const { Pool } = require("pg");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-
+const router = express.Router();
 
 // parse body
 const bodyparser = require("body-parser");
@@ -18,7 +17,6 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const nodemon = require("nodemon");
 const supabase = require("./supabaseClient");
-
 
 app.use(bodyparser.json());
 app.use(express.json());
@@ -36,9 +34,9 @@ app.use(
 
 app.use(cookieParser());
 // app.use(express.urlencoded({extended: true}));
-app.use(express.json()) //
+app.use(express.json()); //
 app.use(bodyparser.urlencoded({ extended: true }));
-app.set('trust proxy', true)
+app.set("trust proxy", true);
 app.use(bodyparser());
 // app.set('trust proxy', true)
 app.use(
@@ -64,7 +62,7 @@ app.use(
 );
 
 app.post("/signup", async (request, response) => {
-  const { username, password, type  } = request.body;
+  const { username, password, type } = request.body;
   console.log("Username:", username); // Log username separately
 
   try {
@@ -72,7 +70,7 @@ app.post("/signup", async (request, response) => {
 
     const { data, error } = await supabase
       .from("users")
-      .insert([{ username:username, password: hashedPassword, type:type }])
+      .insert([{ username: username, password: hashedPassword, type: type }])
       .select()
       .single();
     console.log("ERROR", error);
@@ -101,6 +99,68 @@ app.get("/login", (request, response) => {
   }
 });
 
+app.get("/barbers", async (req, res) => {
+  try {
+    // Fetch data from the barbers table
+    const { data: barbers, error } = await supabase.from("barbers").select("*");
+
+    if (error) {
+      console.error("Supabase error:", error.message, error.hint);
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to fetch barbers." });
+    }
+
+    // Return the data as a response
+    res.json({ success: true, barbers: barbers || [] });
+  } catch (error) {
+    console.error("Internal server error:", error.message);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+app.post("/book-appointment", async (req, res) => {
+  const { barberId, date, time } = req.body;
+
+  try {
+    // Check if the slot is already booked
+    const { data: existingAppointment, error: checkError } = await supabase
+      .from("appointments")
+      .select("*")
+      .eq("barber_id", barberId)
+      .eq("date", date)
+      .eq("time", time);
+
+    if (checkError) {
+      console.error("Error checking appointment:", checkError);
+      return res
+        .status(500)
+        .json({ message: "Error checking appointment availability." });
+    }
+
+    if (existingAppointment && existingAppointment.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "This time slot is already booked." });
+    }
+
+    // Save the appointment
+    const { error: insertError } = await supabase
+      .from("appointments")
+      .insert([{ barber_id: barberId, date: date, time: time }]);
+
+    if (insertError) {
+      console.error("Error inserting appointment:", insertError);
+      return res.status(500).json({ message: "Error booking appointment." });
+    }
+
+    res.status(200).json({ message: "Appointment booked successfully!" });
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
 app.post("/login", async (request, response) => {
   const { username, password, type } = request.body;
   console.log("Username:", username);
@@ -126,9 +186,15 @@ app.post("/login", async (request, response) => {
       request.session.save();
 
       if (user.type === "customer") {
-        response.json({ success: true, message: "Login successful as a customer" });
+        response.json({
+          success: true,
+          message: "Login successful as a customer",
+        });
       } else if (user.type === "barber") {
-        response.json({ success: true, message: "Login successful as a barber" });
+        response.json({
+          success: true,
+          message: "Login successful as a barber",
+        });
       }
     } else {
       response
@@ -142,19 +208,7 @@ app.post("/login", async (request, response) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
-
-
-

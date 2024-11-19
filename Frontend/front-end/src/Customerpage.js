@@ -6,7 +6,7 @@ import CstomerMainpage from './CstmerMainpage';
 
 function Cstomerpage() {
     return (
-      <div className='thestylezone'>
+      <div className='thebarberzone'>
         <HeaderCstmr/>
         <CstomerMainpage/>
         {/* <Footer/> */}
